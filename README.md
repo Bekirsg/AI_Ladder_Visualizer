@@ -1,15 +1,46 @@
-# ⚙️ AI Ladder Logic Visualizer (Copilot for PLC)
-**🌍 Canlı Demo:** [Uygulamayı Test Etmek İçin Tıklayın](https://ailaddervisualizer-mnpkkdd7penjzqe68sp4pg.streamlit.app/)
+# ⚙️ AI Ladder Visualizer: The PLC Copilot
 
-Doğal dil komutlarını saniyeler içinde endüstriyel PLC mantığına (Ladder Diagram) ve SCL koduna çeviren yapay zeka destekli bir otomasyon asistanıdır.
+[![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.30+-red.svg)](https://streamlit.io/)
+[![Gemini API](https://img.shields.io/badge/AI-Google_Gemini-orange.svg)](https://ai.google.dev/)
 
-## 🚀 Projenin Amacı
-Otomasyon mühendislerinin mantık hatalarını kodlamadan önce görselleştirmesini sağlamak ve "Copilot for PLC" konseptini hayata geçirmektir. Sistem, Gemini AI gücünü kullanarak karmaşık senaryoları anında test edilebilir algoritmalara dönüştürür.
+**🌍 Canlı Demo:** [Uygulamayı Hemen Test Edin](https://ailaddervisualizer-mnpkkdd7penjzqe68sp4pg.streamlit.app/)
+
+Doğal dil (Türkçe/İngilizce) komutlarını saniyeler içinde **IEC standartlarına uygun SCL Koduna** ve görsel **Ladder Logic** diyagramlarına dönüştüren yapay zeka tabanlı bir otomasyon asistanıdır.
+
+![Uygulama Ekran Görüntüsü](https://via.placeholder.com/800x400/00979C/FFFFFF?text=AI+Ladder+Logic+Visualizer+-+Ekran+Goruntusu+Ekle)
+
+## 🚀 Öne Çıkan Özellikler
+* **Doğal Dil İşleme (NLP):** Karmaşık otomasyon senaryolarını anlar. (Örn: *"Konveyör bant çalışırken sensör 3 saniye kesintiye uğrarsa acil durdur."*)
+* **Akıllı Validasyon (Boolean Flag):** Endüstriyel olmayan girdileri tespit eder, filtreler ve kullanıcıya düzeltme önerisi (Suggestion) sunar.
+* **Anlık Görselleştirme:** Mermaid.js altyapısı ile anında Ladder diyagramı çizer.
+* **State Management (Hafıza):** Session State yönetimi sayesinde sayfa yenilense dahi üretilen kodlar ve diyagramlar kaybolmaz.
+* **Dışa Aktarma (Export):** Üretilen şemaları `.mmd` veya Base64 şifrelemesiyle yüksek çözünürlüklü `.png` olarak indirmenizi sağlar.
 
 ## 🛠️ Kullanılan Teknolojiler
-* **Yapay Zeka:** Google Gemini 2.5 Flash API
-* **Arayüz (Frontend):** Streamlit 
-* **Görselleştirme:** Mermaid.js 
+* **AI Engine:** Google Gemini 2.5 Flash (Native JSON MIME Type & Low Temperature)
+* **Frontend:** Streamlit, Streamlit-Mermaid
+* **Backend:** Python 3.12
+* **Deployment:** Streamlit Cloud
 
-## 💻 Nasıl Çalışır?
-Kullanıcı senaryoyu girer (Örn: "Start butonuna basıldığında motor çalışsın. 10 saniye sonra otomatik dursun."). Sistem saniyeler içinde hatasız bir JSON çıktısı üretir ve bunu ekranda akış diyagramı ile IEC standartlarına uygun SCL kodu olarak görselleştirir.
+## 💡 Kurulum (Local Development)
+Projeyi kendi bilgisayarınızda çalıştırmak için aşağıdaki adımları izleyebilirsiniz:
+
+```bash
+# Repoyu klonlayın
+git clone [https://github.com/Bekirsg/AI_Ladder_Visualizer.git](https://github.com/Bekirsg/AI_Ladder_Visualizer.git)
+cd AI_Ladder_Visualizer
+
+# Sanal ortam oluşturun ve aktif edin
+python -m venv venv
+venv\Scripts\activate  # Windows için
+# source venv/bin/activate # Mac/Linux için
+
+# Gerekli kütüphaneleri yükleyin
+pip install -r requirements.txt
+
+# Çevresel değişkenleri ayarlayın (Kendi API anahtarınızı girin)
+echo "GEMINI_API_KEY=sizin_api_anahtariniz" > .env
+
+# Uygulamayı başlatın
+streamlit run app.py
