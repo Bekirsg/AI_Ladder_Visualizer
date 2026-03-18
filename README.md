@@ -8,7 +8,8 @@
 
 Doğal dil (Türkçe/İngilizce) komutlarını saniyeler içinde **IEC standartlarına uygun SCL Koduna** ve görsel **Ladder Logic** diyagramlarına dönüştüren yapay zeka tabanlı bir otomasyon asistanıdır.
 
-![Uygulama Ekran Görüntüsü](https://via.placeholder.com/800x400/00979C/FFFFFF?text=AI+Ladder+Logic+Visualizer+-+Ekran+Goruntusu+Ekle)
+![Uygulama Ekran Görüntüsü](https://github.com/user-attachments/assets/21e0a5c9-f0b3-43c2-85de-8aee5f24c753)
+
 
 ## 🚀 Öne Çıkan Özellikler
 * **Doğal Dil İşleme (NLP):** Karmaşık otomasyon senaryolarını anlar. (Örn: *"Konveyör bant çalışırken sensör 3 saniye kesintiye uğrarsa acil durdur."*)
