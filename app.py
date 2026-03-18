@@ -52,8 +52,17 @@ with st.sidebar:
     st.link_button("📝 Değerlendir ve Görüş Bildir", "https://forms.gle/gXKM7GfUCr4eGjFRA") # <-- DİKKAT: BURAYI GÜNCELLEYECEĞİZ
 
 # 3. JSON Temizleyici
+# 3. Akıllı JSON Temizleyici (Bulletproof)
 def clean_json(text):
+    # Markdown kalıntılarını temizle
     text = text.replace("```json", "").replace("```", "").strip()
+    
+    # Sadece { ile başlayıp } ile biten gerçek JSON bloğunu cımbızla
+    start = text.find('{')
+    end = text.rfind('}') + 1
+    if start != -1 and end != -1:
+        text = text[start:end]
+        
     return text
 
 # 4. Ana Ekran
@@ -90,7 +99,7 @@ if generate_btn and user_input.strip():
             )
             
             raw_text = clean_json(response.text)
-            data = json.loads(raw_text)
+            data = json.loads(raw_text, strict=False) # SİHİRLİ PARAMETRE!
             
             valid = data.get("valid", False)
             mermaid_str = data.get("mermaid", "graph LR\nA[Hata]")
@@ -123,6 +132,7 @@ if generate_btn and user_input.strip():
         except json.JSONDecodeError:
             st.session_state.is_generated = False
             st.warning("⚠️ Küçük bir format hatası oldu. Cümleyi tekrar deneyin.")
+            st.error(f"🔍 Hata Avcısı (Sadece biz görüyoruz): {raw_text}")
         except Exception as e:
             st.session_state.is_generated = False
             error_msg = str(e)
