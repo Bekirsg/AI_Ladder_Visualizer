@@ -8,7 +8,7 @@
 
 Doğal dil (Türkçe/İngilizce) komutlarını saniyeler içinde **IEC standartlarına uygun SCL Koduna** ve görsel **Ladder Logic** diyagramlarına dönüştüren yapay zeka tabanlı bir otomasyon asistanıdır.
 
-![Uygulama Ekran Görüntüsü](<img width="1897" height="833" alt="Ekran görüntüsü 2026-03-18 202523" src="https://github.com/user-attachments/assets/21e0a5c9-f0b3-43c2-85de-8aee5f24c753" />)
+![Uygulama Ekran Görüntüsü](https://github.com/user-attachments/assets/21e0a5c9-f0b3-43c2-85de-8aee5f24c753)
 
 
 ## 🚀 Öne Çıkan Özellikler
