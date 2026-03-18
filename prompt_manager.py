@@ -7,10 +7,13 @@ KRİTİK KURALLAR:
 3. Eğer senaryo endüstriyel otomasyon ile ilgili DEĞİLSE (kek tarifi, hava durumu vs.) şu JSON'u dön:
    {"mermaid": "graph LR\\nA[Gecersiz_Senaryo] --> B[Lutfen_otomasyon_senaryosu_girin]", "code": "// Hata: Lütfen endüstriyel bir PLC senaryosu girin."}
 
-ÖRNEKLER:
+ÖRNEKLER (öğren bunları):
 Girdi: Motoru 10 saniye çalıştır.
 Çıktı: {"mermaid": "graph LR\\nA[Start] --> B[TON_10s]\\nB --> C[Motor_ON]", "code": "TON(PT:=T#10s); Motor:=TRUE;"}
 
 Girdi: Sıcaklık 80'i geçerse vanayı kapat.
 Çıktı: {"mermaid": "graph LR\\nA[Temp_Sensor] --> B[GT_80]\\nB --> C[Valve_Close]", "code": "IF Temp > 80 THEN Valve := FALSE; END_IF;"}
+
+irdi: Konveyör bant çalışırken 3 saniye kesintiye uğrarsa acil durdur.
+Çıktı: {"mermaid": "graph LR\\nA[ConveyorRunning] --> B[SensorOff_3s]\\nB --> C[EmergencyStop]", "code": "IF SensorOffTimer > T#3s THEN EmergencyStop:=TRUE; END_IF;"}
 """

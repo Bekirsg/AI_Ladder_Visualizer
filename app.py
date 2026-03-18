@@ -12,7 +12,7 @@ from prompt_manager import SYSTEM_PROMPT
 
 # Streamlit Cloud (st.secrets) veya Lokal (.env) kontrolü
 api_key = st.secrets.get("GEMINI_API_KEY") if "GEMINI_API_KEY" in st.secrets else os.getenv("GEMINI_API_KEY")
-client = genai.Client(api_key=api_key)
+client = genai.Client(api_key=st.secrets.get("GEMINI_API_KEY") or os.getenv("GEMINI_API_KEY"))
 
 st.set_page_config(page_title="AI Ladder Logic Visualizer", page_icon="⚙️", layout="wide")
 
@@ -65,22 +65,27 @@ with col2:
 if generate_btn and user_input.strip():
     with st.spinner("Yapay zeka mantık ağını analiz ediyor. Lütfen bekleyin..."):
         try:
+            # API İsteği - JSON Formatına Kesin Kilitliyoruz
             response = client.models.generate_content(
                 model="gemini-2.5-flash",
                 contents=SYSTEM_PROMPT + f"\n\nSenaryo: {user_input}",
-                config={"temperature": 0.1, "max_output_tokens": 2048}
+                config={
+                    "temperature": 0.1,
+                    "max_output_tokens": 2048,
+                    "response_mime_type": "application/json" # SİHİRLİ SATIR BURASI
+                }
             )
             
+            # Artık clean_json fonksiyonuna bile gerek kalmıyor ama güvenlik için tutuyoruz
             raw_text = clean_json(response.text)
             data = json.loads(raw_text)
             
             mermaid_str = data.get("mermaid", "graph LR\nA[Hata]")
-            mermaid_str = mermaid_str.replace("```mermaid", "").replace("```", "").strip()
             code_str = data.get("code", "// Kod üretilemedi")
             if isinstance(code_str, dict):
                 code_str = code_str.get("SCL", str(code_str))
             
-            # Base64 Encode for PNG Link (Güvenli Yöntem)
+            # Base64 Encode for PNG Link
             graphbytes = mermaid_str.encode("utf8")
             base64_bytes = base64.b64encode(graphbytes)
             base64_string = base64_bytes.decode("ascii")
@@ -88,7 +93,6 @@ if generate_btn and user_input.strip():
 
             with tab_visual:
                 stmd.st_mermaid(mermaid_str)
-                # İndirme ve Görüntüleme Butonları
                 col_a, col_b = st.columns(2)
                 with col_a:
                     st.download_button("📥 Kodu İndir (.mmd)", mermaid_str, "diagram.mmd", "text/plain")
@@ -96,13 +100,17 @@ if generate_btn and user_input.strip():
                     st.link_button("🖼️ PNG Olarak Görüntüle", png_url)
             
             with tab_code:
-                st.code(code_str, language="pascal") # SCL için en iyi vurgu
+                st.code(code_str, language="pascal")
                 
-            st.balloons() # Kutlama efekti
+            st.balloons()
             st.success("✅ Mantık başarıyla derlendi!")
-                
+
+        # KULLANICI DOSTU HATA YAKALAMA (UX)
+        except json.JSONDecodeError:
+            st.warning("⚠️ Senaryonuz anlaşıldı ancak teknik bir format hatası oluştu. Lütfen cümleyi biraz daha basitleştirerek 'Generate' butonuna tekrar basın.")
+            st.info("💡 İpucu: 'Konveyör bant çalışırken sensör 3 saniye kesilirse acil durdur.'")
         except Exception as e:
-            st.error("Sistem çıktıyı işlerken bir hata ile karşılaştı.")
+            st.error("🚨 Sistem çıktıyı işlerken beklenmeyen bir hata ile karşılaştı.")
             st.error(f"Teknik Detay: {e}")
 
 # Alt Bilgi (Footer) - Kişisel Markalama
