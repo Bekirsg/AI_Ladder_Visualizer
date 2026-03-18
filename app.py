@@ -40,7 +40,7 @@ with st.sidebar:
     st.markdown("<h2 style='text-align: center; color: #00979C;'>🤖 AI PLC Copilot</h2>", unsafe_allow_html=True)
     
     st.markdown("👋 **Nasıl Çalışır?**")
-    st.markdown("Günlük Türkçe veya İngilizce yazdığınız otomasyon senaryolarını yapay zeka ile anlar ve saniyeler içinde Ladder diyagramı + SCL kodu üretir. Yanlış yazsanız bile nazikçe yol gösterir.")
+    st.markdown("Günlük Türkçe veya İngilizce yazdığınız otomasyon senaryolarını yapay zeka ile anlar ve saniyeler içinde Ladder diyagramı + SCL kodu üretir. Yanlış veya eksik senaryolar için de yol gösterir.")
     st.markdown("---")
     
     st.header("💡 Örnek Senaryolar")
@@ -52,10 +52,11 @@ with st.sidebar:
     st.code("Acil stop butonuna basıldığında tüm sistemi anında durdur ve hata ışığını yak.", language="text")
     st.markdown("---")
     
-    st.info("💡 **İpucu:** Sidebar’daki örnekleri kopyala-yapıştırarak en iyi sonucu alabilirsiniz.")
+    st.info("💡 **İpucu:** Daha iyi sonuçlar için 'sensör', 'valf', 'motor' gibi teknik terimleri kullanarak daha spesifik cümleler kurmanız ve yazım/noktalama hatalarını kontrol etmeniz önerilir.")
     
     st.markdown("---")
-    st.markdown("⭐ **Geri Bildirim**")
+    st.markdown("⭐ **Geri Bildirim & Değerlendirme**")
+    st.markdown("Hata bildirimleriniz veya geliştirme önerileriniz için aşağıdaki butonu kullanabilirsiniz.")
     st.link_button("📝 Değerlendir ve Görüş Bildir", "https://forms.gle/2rmSxXpZBjaBkuBV8")
 
 # JSON Temizleyici
