@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from google import genai
 import streamlit_mermaid as stmd
 
-# 1. Altyapı ve Güvenli API Yönetimi
+# 1. Altyapı
 load_dotenv()
 from prompt_manager import SYSTEM_PROMPT
 
@@ -15,19 +15,16 @@ client = genai.Client(api_key=api_key)
 
 st.set_page_config(page_title="AI Ladder Logic Visualizer", page_icon="⚙️", layout="wide")
 
-# SAĞ ÜST MENÜYÜ TAMAMEN GİZLE
+# SAĞ ÜST MENÜYÜ HAFİF GİZLE (Sadece gereksiz Deploy butonu gizlenir, Share butonu kalır)
 hide_st_style = """
     <style>
-    #MainMenu {visibility: hidden;}
     header {visibility: hidden;}
-    footer {visibility: hidden;}
     .stDeployLabel {display: none;}
-    .stAppDeployButton {display: none;}
     </style>
 """
 st.markdown(hide_st_style, unsafe_allow_html=True)
 
-# 2. Başlık
+# Başlık
 st.markdown("""
     <h1 style='text-align: center; color: #00979C; font-size: 2.8rem;'>
         ⚙️ AI Ladder Logic Visualizer
@@ -38,12 +35,12 @@ st.markdown("""
 """, unsafe_allow_html=True)
 st.markdown("---")
 
-# Sol Menü (Sidebar)
+# SOL SIDEBAR (Geri getirildi ve güçlendirildi)
 with st.sidebar:
     st.markdown("<h2 style='text-align: center; color: #00979C;'>🤖 AI PLC Copilot</h2>", unsafe_allow_html=True)
     
     st.markdown("👋 **Nasıl Çalışır?**")
-    st.markdown("Bu uygulama, günlük Türkçe veya İngilizce yazdığınız otomasyon senaryolarını yapay zeka ile anlar ve saniyeler içinde **Ladder diyagramı** + **SCL kodu** üretir. Saçma veya eksik yazsanız bile size nazikçe yol gösterir.")
+    st.markdown("Günlük Türkçe veya İngilizce yazdığınız otomasyon senaryolarını yapay zeka ile anlar ve saniyeler içinde Ladder diyagramı + SCL kodu üretir. Saçma yazsanız bile size nazikçe yol gösterir.")
     st.markdown("---")
     
     st.header("💡 Örnek Senaryolar")
@@ -58,7 +55,7 @@ with st.sidebar:
     st.info("💡 **İpucu:** Daha iyi sonuçlar için 'sensör', 'valf', 'motor', 'timer', 'acil durdur' gibi teknik terimleri kullanabilirsiniz. Yazım hatalarını da düzeltebiliriz!")
     
     st.markdown("---")
-    st.markdown("💬 **Geri Bildirim & İletişim**")
+    st.markdown("💬 **Geri Bildirim**")
     st.link_button("✉️ Geri Bildirim Gönder (Sadece bana ulaşır)", "mailto:guzlek21@itu.edu.tr?subject=AI Ladder Visualizer - Geri Bildirim & Öneri")
 
 # 3. JSON Temizleyici
@@ -82,7 +79,7 @@ with col2:
     st.subheader("🛠️ Çıktılar")
     tab_visual, tab_code = st.tabs(["📊 Görsel Diyagram", "💻 SCL Kodu"])
 
-# 5. Core Engine
+# 5. Core Engine (değişmedi)
 if "is_generated" not in st.session_state:
     st.session_state.is_generated = False
 
