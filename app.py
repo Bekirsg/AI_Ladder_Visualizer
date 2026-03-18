@@ -68,8 +68,7 @@ if "is_generated" not in st.session_state:
 
 if generate_btn and user_input.strip():
     with st.spinner("Yapay zeka mantık ağını analiz ediyor. Lütfen bekleyin..."):
-        try:
-            # API İsteği
+                    try:
             response = client.models.generate_content(
                 model="gemini-2.5-flash",
                 contents=SYSTEM_PROMPT + f"\n\nSenaryo: {user_input}",
@@ -83,48 +82,32 @@ if generate_btn and user_input.strip():
             raw_text = clean_json(response.text)
             data = json.loads(raw_text)
             
+            valid = data.get("valid", False)
             mermaid_str = data.get("mermaid", "graph LR\nA[Hata]")
             code_str = data.get("code", "// Kod üretilemedi")
-            if isinstance(code_str, dict):
-                code_str = code_str.get("SCL", str(code_str))
-            
-            # Base64 Encode
-            graphbytes = mermaid_str.encode("utf8")
-            base64_bytes = base64.b64encode(graphbytes)
-            base64_string = base64_bytes.decode("ascii")
-            png_url = f"https://mermaid.ink/img/{base64_string}"
+            suggestion = data.get("suggestion", "")
 
-            # ÇIKTILARI HAFIZAYA (SESSION STATE) KAYDET
-            st.session_state.mermaid_str = mermaid_str
-            st.session_state.code_str = code_str
-            st.session_state.png_url = png_url
-            st.session_state.is_generated = True
-
-            st.balloons()
-            st.success("✅ Mantık başarıyla derlendi!")
+            if valid:
+                # Başarılı yol
+                st.session_state.mermaid_str = mermaid_str
+                st.session_state.code_str = code_str
+                st.session_state.is_generated = True
+                st.balloons()
+                st.success("✅ Mantık başarıyla derlendi!")
+            else:
+                # Geçersiz yol - başarı mesajı YOK
+                st.session_state.is_generated = False
+                st.warning("⚠️ Bu senaryo anlaşılmadı veya PLC mantığına uymuyor.")
+                if suggestion:
+                    st.info(f"💡 Öneri: {suggestion}")
+                st.info("Tekrar deneyin veya sidebar’daki örneklerden birini kopyalayın.")
 
         except json.JSONDecodeError:
-            st.warning("⚠️ Senaryonuz anlaşıldı ancak teknik bir format hatası oluştu. Lütfen cümleyi biraz daha basitleştirerek 'Generate' butonuna tekrar basın.")
-            st.info("💡 İpucu: 'Konveyör bant çalışırken sensör 3 saniye kesilirse acil durdur.'")
             st.session_state.is_generated = False
+            st.warning("⚠️ AI JSON formatında cevap veremedi. Cümleyi biraz daha net yazın.")
         except Exception as e:
-            st.error("🚨 Sistem çıktıyı işlerken beklenmeyen bir hata ile karşılaştı.")
-            st.error(f"Teknik Detay: {e}")
             st.session_state.is_generated = False
-
-# 6. Çıktıları Ekrana Basma (Hafızadan Okuma)
-if st.session_state.is_generated:
-    with tab_visual:
-        stmd.st_mermaid(st.session_state.mermaid_str)
-        col_a, col_b = st.columns(2)
-        with col_a:
-            st.download_button("📥 Kodu İndir (.mmd)", st.session_state.mermaid_str, "diagram.mmd", "text/plain")
-        with col_b:
-            st.link_button("🖼️ PNG Olarak Görüntüle", st.session_state.png_url)
-    
-    with tab_code:
-        st.code(st.session_state.code_str, language="pascal")
-
+            st.error(f"🚨 Beklenmeyen hata: {str(e)[:120]}")
 # Alt Bilgi (Footer)
 st.markdown("---")
 st.markdown("<p style='text-align: center; color: #888888;'>🚀 Bekir Samet Güzlek • İTÜ Kontrol ve Otomasyon • 2026</p>", unsafe_allow_html=True)
