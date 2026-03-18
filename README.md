@@ -1,4 +1,5 @@
 # ⚙️ AI Ladder Logic Visualizer (Copilot for PLC)
+**🌍 Canlı Demo:** [Uygulamayı Test Etmek İçin Tıklayın](https://ailaddervisualizer-mnpkkdd7penjzqe68sp4pg.streamlit.app/)
 
 Doğal dil komutlarını saniyeler içinde endüstriyel PLC mantığına (Ladder Diagram) ve SCL koduna çeviren yapay zeka destekli bir otomasyon asistanıdır.
 
