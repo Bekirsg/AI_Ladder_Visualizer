@@ -120,8 +120,13 @@ if generate_btn and user_input.strip():
             st.warning("⚠️ API format hatası. Lütfen cümleyi biraz daha net yazıp tekrar deneyin.")
         except Exception as e:
             st.session_state.is_generated = False
-            st.error("🚨 Sistem çıktıyı işlerken beklenmeyen bir hata ile karşılaştı.")
-            st.error(f"Teknik Detay: {e}")
+            error_msg = str(e)
+            # 429 Hız Sınırı (Rate Limit) Hatası Yakalama
+            if "429" in error_msg or "Quota" in error_msg:
+                st.warning("⏳ Sistem şu an çok yoğun (API İstek Sınırı). Lütfen 1 dakika bekleyip tekrar deneyin.")
+            else:
+                st.error("🚨 Sistem çıktıyı işlerken beklenmeyen bir hata ile karşılaştı.")
+                st.error(f"Teknik Detay: {error_msg}")
 
 # 6. Çıktıları Ekrana Basma (Hafızadan Okuma)
 if st.session_state.is_generated:
