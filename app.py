@@ -12,7 +12,7 @@ from prompt_manager import SYSTEM_PROMPT
 
 # Streamlit Cloud (st.secrets) veya Lokal (.env) kontrolü
 api_key = st.secrets.get("GEMINI_API_KEY") if "GEMINI_API_KEY" in st.secrets else os.getenv("GEMINI_API_KEY")
-client = genai.Client(api_key=st.secrets.get("GEMINI_API_KEY") or os.getenv("GEMINI_API_KEY"))
+client = genai.Client(api_key=api_key)
 
 st.set_page_config(page_title="AI Ladder Logic Visualizer", page_icon="⚙️", layout="wide")
 
@@ -61,14 +61,14 @@ with col2:
     st.subheader("🛠️ Çıktılar")
     tab_visual, tab_code = st.tabs(["📊 Görsel Diyagram", "💻 SCL Kodu"])
 
-# 5. Core Engine
 # 5. Core Engine (Hafıza ve State Yönetimi)
 if "is_generated" not in st.session_state:
     st.session_state.is_generated = False
 
 if generate_btn and user_input.strip():
     with st.spinner("Yapay zeka mantık ağını analiz ediyor. Lütfen bekleyin..."):
-                    try:
+        try:
+            # API İsteği
             response = client.models.generate_content(
                 model="gemini-2.5-flash",
                 contents=SYSTEM_PROMPT + f"\n\nSenaryo: {user_input}",
@@ -82,32 +82,60 @@ if generate_btn and user_input.strip():
             raw_text = clean_json(response.text)
             data = json.loads(raw_text)
             
+            # JSON'dan gelen verileri ayrıştırma
             valid = data.get("valid", False)
             mermaid_str = data.get("mermaid", "graph LR\nA[Hata]")
             code_str = data.get("code", "// Kod üretilemedi")
             suggestion = data.get("suggestion", "")
 
             if valid:
-                # Başarılı yol
+                # Başarılı Senaryo
+                if isinstance(code_str, dict):
+                    code_str = code_str.get("SCL", str(code_str))
+                
+                # Base64 Encode (PNG için)
+                graphbytes = mermaid_str.encode("utf8")
+                base64_bytes = base64.b64encode(graphbytes)
+                base64_string = base64_bytes.decode("ascii")
+                png_url = f"https://mermaid.ink/img/{base64_string}"
+
+                # Hafızaya Kaydet
                 st.session_state.mermaid_str = mermaid_str
                 st.session_state.code_str = code_str
+                st.session_state.png_url = png_url
                 st.session_state.is_generated = True
+
                 st.balloons()
                 st.success("✅ Mantık başarıyla derlendi!")
             else:
-                # Geçersiz yol - başarı mesajı YOK
+                # Başarısız Senaryo (Saçma Metinler)
                 st.session_state.is_generated = False
-                st.warning("⚠️ Bu senaryo anlaşılmadı veya PLC mantığına uymuyor.")
+                st.warning("⚠️ Bu senaryo anlaşılamadı veya PLC mantığına uymuyor.")
                 if suggestion:
-                    st.info(f"💡 Öneri: {suggestion}")
-                st.info("Tekrar deneyin veya sidebar’daki örneklerden birini kopyalayın.")
+                    st.info(f"💡 Yapay Zeka Önerisi: {suggestion}")
+                st.info("Sol menüdeki örneklerden birini kopyalayarak sistemi test edebilirsiniz.")
 
         except json.JSONDecodeError:
             st.session_state.is_generated = False
-            st.warning("⚠️ AI JSON formatında cevap veremedi. Cümleyi biraz daha net yazın.")
+            st.warning("⚠️ API format hatası. Lütfen cümleyi biraz daha net yazıp tekrar deneyin.")
         except Exception as e:
             st.session_state.is_generated = False
-            st.error(f"🚨 Beklenmeyen hata: {str(e)[:120]}")
+            st.error("🚨 Sistem çıktıyı işlerken beklenmeyen bir hata ile karşılaştı.")
+            st.error(f"Teknik Detay: {e}")
+
+# 6. Çıktıları Ekrana Basma (Hafızadan Okuma)
+if st.session_state.is_generated:
+    with tab_visual:
+        stmd.st_mermaid(st.session_state.mermaid_str)
+        col_a, col_b = st.columns(2)
+        with col_a:
+            st.download_button("📥 Kodu İndir (.mmd)", st.session_state.mermaid_str, "diagram.mmd", "text/plain")
+        with col_b:
+            st.link_button("🖼️ PNG Olarak Görüntüle", st.session_state.png_url)
+    
+    with tab_code:
+        st.code(st.session_state.code_str, language="pascal")
+
 # Alt Bilgi (Footer)
 st.markdown("---")
 st.markdown("<p style='text-align: center; color: #888888;'>🚀 Bekir Samet Güzlek • İTÜ Kontrol ve Otomasyon • 2026</p>", unsafe_allow_html=True)
