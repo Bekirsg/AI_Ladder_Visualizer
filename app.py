@@ -15,8 +15,6 @@ client = genai.Client(api_key=api_key)
 
 st.set_page_config(page_title="AI Ladder Logic Visualizer", page_icon="⚙️", layout="wide")
 
-# CSS GİZLEME KODLARI TAMAMEN SİLİNDİ - ORİJİNAL STREAMLIT ARAYÜZÜ KULLANILIYOR
-
 # 2. Viral Frontend Tasarımı
 st.markdown("""
     <h1 style='text-align: center; color: #00979C; font-size: 2.8rem;'>
@@ -33,7 +31,7 @@ with st.sidebar:
     st.markdown("<h2 style='text-align: center; color: #00979C;'>🤖 AI PLC Copilot</h2>", unsafe_allow_html=True)
     
     st.markdown("👋 **Nasıl Çalışır?**")
-    st.markdown("Bu uygulama, günlük Türkçe veya İngilizce yazdığınız otomasyon senaryolarını yapay zeka ile anlar ve saniyeler içinde **Ladder diyagramı** + **SCL kodu** üretir. Saçma veya eksik yazsanız bile size nazikçe yol gösterir.")
+    st.markdown("Bu uygulama, günlük Türkçe veya İngilizce yazdığınız otomasyon senaryolarını yapay zeka ile algılayıp saniyeler içinde **Ladder diyagramı** + **SCL kodu** üretir. Yanlış veya eksik yazılar için de yol gösterir.")
     st.markdown("---")
     
     st.header("💡 Örnek Senaryolar")
@@ -45,13 +43,13 @@ with st.sidebar:
     st.code("Acil stop butonuna basıldığında tüm sistemi anında durdur ve hata ışığını yak.", language="text")
     st.markdown("---")
     
-    st.info("💡 **İpucu:** Daha iyi sonuçlar için 'sensör', 'valf', 'motor', 'timer', 'acil durdur' gibi teknik terimleri kullanabilirsiniz. Yazım hatalarını da düzeltebiliriz!")
+    st.info("💡 **İpucu:** Daha iyi sonuçlar için 'sensör', 'valf', 'motor', 'timer', 'acil durdur' gibi teknik terimleri kullanarak daha anlamlı ve spesifik cümleler kurmanız ve yazım/noktalama hatalarını kontrol etmeniz önerilir.")
     
-    # Geri Bildirim Butonu
+    # Geri Bildirim Sistemi (Google Forms Entegrasyonu)
     st.markdown("---")
     st.markdown("⭐ **Geri Bildirim & Değerlendirme**")
-    st.markdown("Sistemi nasıl buldunuz? Hata veya geliştirme önerilerinizi bekliyorum.")
-    st.link_button("✉️ Bana Ulaşın (Geri Bildirim Gönder)", "mailto:guzlek21@itu.edu.tr?subject=AI Ladder Visualizer - Degerlendirme ve Oneri")
+    st.markdown("Sistemi nasıl buldunuz? Hata veya geliştirme önerileri için aşağıdaki linke tıklayın.")
+    st.link_button("📝 Değerlendir ve Görüş Bildir", "https://forms.gle/gXKM7GfUCr4eGjFRA") # <-- DİKKAT: BURAYI GÜNCELLEYECEĞİZ
 
 # 3. JSON Temizleyici
 def clean_json(text):
