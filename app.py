@@ -15,10 +15,9 @@ client = genai.Client(api_key=api_key)
 
 st.set_page_config(page_title="AI Ladder Logic Visualizer", page_icon="⚙️", layout="wide")
 
-# Sağ üst menü hafif gizle (Share butonu kalsın)
+# Sağ üst menüden sadece Deploy yazısını gizle (Header kalsın ki Sidebar açılabilsin)
 hide_st_style = """
     <style>
-    header {visibility: hidden;}
     .stDeployLabel {display: none;}
     </style>
 """
@@ -96,7 +95,7 @@ if generate_btn and user_input.strip():
             
             raw_text = clean_json(response.text)
             
-            # API'nin ürettiği çift ters bölüleri (\\n) JSON'ın okuyabilmesi için normalize ediyoruz
+            # API'nin ürettiği çift ters bölüleri (\n) JSON'ın okuyabilmesi için normalize ediyoruz
             raw_text = raw_text.replace("\\\\n", "\\n")
             
             data = json.loads(raw_text, strict=False)
@@ -134,7 +133,7 @@ if generate_btn and user_input.strip():
                 st.warning("⏳ Sistem şu an yoğun. Lütfen 1 dakika bekleyip tekrar deneyin.")
             else:
                 st.warning("⚠️ Senaryo işlenirken bir pürüz çıktı.")
-                st.info("💡 **Çözüm:** Anlam bütünlüğünün korunduğundan ve yazım hatası olmadığından emin olup tekrar deneyiniz. \n Hatanın yenilenmesi halinde daha basit bir senaryo oluşturmayı deneyebilir ve örnek senaryolardan birini kullaabilirsiniz.😊")
+                st.info("💡 **Çözüm:** Anlam bütünlüğünün korunduğundan ve yazım hatası olmadığından emin olup tekrar deneyiniz. \n Hatanın yenilenmesi halinde daha basit bir senaryo oluşturmayı deneyebilir ve örnek senaryolardan birini kullanabilirsiniz.😊")
 
 # Çıktıları Göster
 if st.session_state.is_generated:
