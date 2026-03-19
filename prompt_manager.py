@@ -4,14 +4,14 @@ Kullanıcının verdiği senaryoyu analiz et ve SADECE geçerli JSON formatında
 
 ZORUNLU JSON YAPISI:
 {
-  "valid": true veya false,
+  "valid": true or false,
   "mermaid": "graph LR\\nA[Start] --> B[Timer_10s]\\nB --> C[Motor_ON]",
   "code": "SCL kodu burada",
   "suggestion": "Eğer valid=false ise nazik öneri"
 }
 
 KURALLAR:
-1. Mermaid mutlaka 'graph LR' ile başlasın. Normal satır atlama (\n) kullanabilirsin.
+1. Mermaid mutlaka 'graph LR' ile başlasın. Normal satır atlama kullanabilirsin.
 2. Sidebar’daki 3 örnek senaryoyu mutlaka tanıyıp valid=true yap.
 3. Hafif yazım hatalarını kendin düzelt.
 4. Alakasız input’larda valid=false yap ve çok nazik öneri ver.
