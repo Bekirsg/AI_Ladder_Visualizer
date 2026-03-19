@@ -134,7 +134,7 @@ if generate_btn and user_input.strip():
                 st.warning("⏳ Sistem şu an yoğun. Lütfen 1 dakika bekleyip tekrar deneyin.")
             else:
                 st.warning("⚠️ Senaryo işlenirken bir pürüz çıktı.")
-                st.info("💡 **Çözüm:** Yandaki örneklerden birini deneyebilir veya her seferinde farklı bir örnek senaryo oluşturarak sistemi test edebilirsiniz; böylece daha iyi bir çıktı alabilirsiniz. 😊")
+                st.info("💡 **Çözüm:** Anlam bütünlüğünün korunduğundan ve yazım hatası olmadığından emin olup tekrar deneyiniz. \n Hatanın yenilenmesi halinde daha basit bir senaryo oluşturmayı deneyebilir ve örnek senaryolardan birini kullaabilirsiniz.😊")
 
 # Çıktıları Göster
 if st.session_state.is_generated:
