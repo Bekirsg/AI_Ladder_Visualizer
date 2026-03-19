@@ -45,7 +45,7 @@ with st.sidebar:
     
     st.header("💡 Örnek Senaryolar")
     st.markdown("**⏱️ Zamanlayıcı Testi**")
-    st.code("Start butonuna basıldığında motor çalışsın. 10 saniye sonra otomatik dursun.", language="text")
+    st.code("Sensör aktif olduktan 5 saniye sonra lamba yansın", language="text")
     st.markdown("**🔀 Mantık Testi**")
     st.code("Tank seviyesi kritik değere ulaşırsa VE sıcaklık 50 dereceden fazlaysa soğutma valfini aç.", language="text")
     st.markdown("**🛑 Güvenlik Testi**")
