@@ -15,9 +15,10 @@ client = genai.Client(api_key=api_key)
 
 st.set_page_config(page_title="AI Ladder Logic Visualizer", page_icon="⚙️", layout="wide")
 
-# Sağ üst menüden sadece Deploy yazısını gizle (Header kalsın ki Sidebar açılabilsin)
+# Sağ üst menü hafif gizle (Share butonu kalsın)
 hide_st_style = """
     <style>
+    header {visibility: hidden;}
     .stDeployLabel {display: none;}
     </style>
 """
@@ -121,19 +122,19 @@ if generate_btn and user_input.strip():
                 st.success("✅ Harika! Mantık başarıyla derlendi.")
             else:
                 st.session_state.is_generated = False
-                st.warning("⚠️ Senaryo işlenirken bir pürüz çıktı.")
+                st.warning("⚠️ Senaryo tam olarak anlaşılamadı.")
                 if suggestion:
                     st.info(suggestion)
                 else:
-                    st.info("💡 Lütfen sidebar’daki örneklerden birini kopyala-yapıştır.")
+                    st.info("💡 Lütfen sol menüdeki hazır örneklerden birini kopyalayarak tekrar deneyin.")
 
         except Exception as e:
             st.session_state.is_generated = False
             if "429" in str(e) or "Quota" in str(e):
                 st.warning("⏳ Sistem şu an yoğun. Lütfen 1 dakika bekleyip tekrar deneyin.")
             else:
-                st.warning("⚠️ Senaryo işlenirken bir pürüz çıktı.")
-                st.info("💡 **Çözüm:** Anlam bütünlüğünün korunduğundan ve yazım hatası olmadığından emin olup tekrar deneyiniz. \n Hatanın yenilenmesi halinde daha basit bir senaryo oluşturmayı deneyebilir ve örnek senaryolardan birini kullanabilirsiniz.😊")
+                st.warning("⚠️ Senaryo işlenirken ufak bir pürüz çıktı.")
+                st.info("💡 **Çözüm:** Cümlenizi biraz daha basitleştirip teknik terimler (valf, sensör, motor vb.) ekleyerek tekrar deneyebilirsiniz. Veya sol menüdeki hazır örneklerden birini kopyalayarak sistemi hemen test edebilirsiniz! 😊")
 
 # Çıktıları Göster
 if st.session_state.is_generated:
