@@ -59,7 +59,7 @@ with st.sidebar:
     st.markdown("Hata bildirimleriniz veya geliştirme önerileriniz için aşağıdaki butonu kullanabilirsiniz.")
     st.link_button("📝 Değerlendir ve Görüş Bildir", "https://forms.gle/2rmSxXpZBjaBkuBV8")
 
-# JSON Temizleyici
+# JSON Temizleyici - Zırhlı Versiyon
 def clean_json(text):
     if not text: return "{}"
     text = text.replace("```json", "").replace("```", "").strip()
@@ -95,6 +95,10 @@ if generate_btn and user_input.strip():
             )
             
             raw_text = clean_json(response.text)
+            
+            # API'nin ürettiği çift ters bölüleri (\\n) JSON'ın okuyabilmesi için normalize ediyoruz
+            raw_text = raw_text.replace("\\\\n", "\\n")
+            
             data = json.loads(raw_text, strict=False)
             
             valid = data.get("valid", False)
@@ -130,14 +134,16 @@ if generate_btn and user_input.strip():
                 st.warning("⏳ Sistem şu an yoğun. Lütfen 1 dakika bekleyip tekrar deneyin.")
             else:
                 st.warning("⚠️ Senaryo işlenirken bir pürüz çıktı.")
-                st.info("💡 **Çözüm:** Sidebar’daki örnekleri kopyala-yapıştır ve tekrar dene. 😊")
+                st.info("💡 **Çözüm:** Yandaki örneklerden birini deneyebilir veya her seferinde farklı bir örnek senaryo oluşturarak sistemi test edebilirsiniz; böylece daha iyi bir çıktı alabilirsiniz. 😊")
 
 # Çıktıları Göster
 if st.session_state.is_generated:
     with tab_visual:
-        stmd.st_mermaid(st.session_state.mermaid_str)
+        # Mermaid'in sorunsuz çizmesi için kaçış karakterlerini gerçek yeni satıra dönüştürüyoruz
+        final_mermaid = st.session_state.mermaid_str.replace("\\n", "\n")
+        stmd.st_mermaid(final_mermaid)
         col_a, col_b = st.columns(2)
-        with col_a: st.download_button("📥 Kodu İndir (.mmd)", st.session_state.mermaid_str, "diagram.mmd")
+        with col_a: st.download_button("📥 Kodu İndir (.mmd)", final_mermaid, "diagram.mmd")
         with col_b: st.link_button("🖼️ PNG Olarak Görüntüle", st.session_state.png_url)
     
     with tab_code:
