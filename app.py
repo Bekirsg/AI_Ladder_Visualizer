@@ -15,10 +15,9 @@ client = genai.Client(api_key=api_key)
 
 st.set_page_config(page_title="AI Ladder Logic Visualizer", page_icon="⚙️", layout="wide")
 
-# Sağ üst menü hafif gizle (Share butonu kalsın)
+# Sağ üst menüden sadece Deploy yazısını gizle (Hamburger menü kalsın)
 hide_st_style = """
     <style>
-    header {visibility: hidden;}
     .stDeployLabel {display: none;}
     </style>
 """
